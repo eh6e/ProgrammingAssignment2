@@ -1,17 +1,21 @@
-## These functions will compute the invert to a matrix, if it hasn't  been computed before.
-## It will send the result to the cache, so it can be taken from there, if it needed again.
+## This pair of functions will cache the inverse of a matrix.
+## It will only compute the inverse of the matrix if the result i not cached before 
+## The code i executed like this: MyMatrix <- makeCacheMatrix(c), where c is i matrix.
+## After that you can run and rerun cacheSolve(myMatrix) as many times as you like, but it will only use 
+## computing-power the first time you run it.
 
-## This function creates a special "matrix" object that can cache its inverse.
+
+## This first function creates a special R object containing the matrix and some other variables in its own environment.
 
 makeCacheMatrix <- function(x = matrix()) {
-        m <- NULL
+        i <- NULL
         set <- function(y) {
                 x <<- y
-                m <<- NULL
+                i <<- NULL
         }
         get <- function() x
-        setinverse <- function(inverse) m <<- inverse
-        getinverse <- function() m
+        setinverse <- function(inverse) i <<- inverse
+        getinverse <- function() i
         list(set = set, get = get,
              setinverse = setinverse,
              getinverse = getinverse)
@@ -24,15 +28,15 @@ makeCacheMatrix <- function(x = matrix()) {
 ## the inverse from the cache.
 
 cacheSolve <- function(x, ...) {
-        m <- x$getinverse()
-        if(!is.null(m)) {
+        i <- x$getinverse()
+        if(!is.null(i)) {
                 message("getting cached data")
-                return(m)
+                return(i)
         }
         data <- x$get()
-        m <- solve(data, ...)
-        x$setinverse(m)
-        m        
+        i <- solve(data, ...)
+        x$setinverse(i)
+        i
 }
 
 
